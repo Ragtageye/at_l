@@ -1,0 +1,81 @@
+{
+  "piano": [],
+  "sleeping": [
+    {
+      "activity_date": "2022-11-03 13:11:55.320613700 -04:00",
+      "activity_name": "A",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 0,
+        "nondividedtime": 52,
+        "seconds": 52
+      }
+    }
+  ],
+  "studying": [
+    {
+      "activity_date": "2022-11-03 11:59:47.796077800 -04:00",
+      "activity_name": "B",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 0,
+        "nondividedtime": 1,
+        "seconds": 1
+      }
+    },
+    {
+      "activity_date": "2022-11-03 12:01:58.004790200 -04:00",
+      "activity_name": "C",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 0,
+        "nondividedtime": 1,
+        "seconds": 1
+      }
+    },
+    {
+      "activity_date": "2022-11-03 13:18:02.615875300 -04:00",
+      "activity_name": "D",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 5,
+        "nondividedtime": 347,
+        "seconds": 47
+      }
+    }
+  ],
+  "talking": [
+    {
+      "activity_date": "2022-11-03 13:10:38.755631700 -04:00",
+      "activity_name": "E",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 3,
+        "nondividedtime": 228,
+        "seconds": 48
+      }
+    }
+  ],
+  "tv": [
+    {
+      "activity_date": "2022-11-03 15:05:26.283955500 -04:00",
+      "activity_name": "tv",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 0,
+        "nondividedtime": 46,
+        "seconds": 46
+      }
+    },
+    {
+      "activity_date": "2022-11-03 15:29:32.405195200 -04:00",
+      "activity_name": "tv",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 12,
+        "nondividedtime": 741,
+        "seconds": 21
+      }
+    }
+  ]
+}
