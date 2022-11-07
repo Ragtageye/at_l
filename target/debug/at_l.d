@@ -1,1 +1,1 @@
-/home/alexc/projects/rust/at_l/target/debug/at_l: /home/alexc/projects/rust/at_l/src/main.rs
+/mnt/c/Users/Alex\ Christie/Documents/GitHub/at_l/target/debug/at_l: /mnt/c/Users/Alex\ Christie/Documents/GitHub/at_l/src/main.rs

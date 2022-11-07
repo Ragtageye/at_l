@@ -13,7 +13,6 @@ use serde_json::Result;
 //mod tui;
 //use crate::tui::draw_terminal;
 
-// #[derive(Debug)]
 #[derive(Serialize, Deserialize, Debug)]
 struct TimeResults {
     hours: u64,
@@ -21,15 +20,12 @@ struct TimeResults {
     seconds: u64,
     nondividedtime: u64,
 }
-// #[derive(Debug)]
 #[derive(Serialize, Deserialize, Debug)]
 struct ActivityData {
     activity_name: String,
     activity_date: String,
     time_achieved: TimeResults,
 }
-
-
 
 fn count_time() -> TimeResults {
     let timer = SystemTime::now();
@@ -99,7 +95,6 @@ fn file_writer(timer_results:TimeResults, activity: &str) -> Result<()> {
                         .create(true)
                         .open("time_log.json")
                         .expect("Unable to open file");
-    // let line = format!("\n{:#?}", my_activities_and_their_times);
     seq.write_all(out.expect("File Not Found").as_bytes()).expect("Unable to write data");
 
     Ok(())
@@ -110,10 +105,7 @@ fn file_reader()  -> serde_json::Value {
     file_check();
     let text = std::fs::read_to_string("time_log.json").unwrap();
     let p: serde_json::Value = serde_json::from_str(&text).unwrap();
-
-    // println!("\n {:#?}", p);
     p
-   // Ok(())
 }
 
 fn list_activities() {
@@ -157,13 +149,10 @@ fn display_activity_times() {
         act_list.push(i)
     };
     for j in 0..act_list.len() {
-        // println!("{:#?}", act_list[j]);
-        // println!("{:#?}", p[act_list[j]]);
         let mut total_time: i64 = 0;
 
         for k in 0..p[act_list[j]].as_array().unwrap().len() {
             let t_out = p[act_list[j]].as_array().unwrap()[k].as_object().unwrap().get("time_achieved").unwrap().as_object().unwrap().get("nondividedtime").unwrap().as_i64().unwrap();
-            // let t_outs2 = t_out
             total_time += t_out;
         }
         let hou = total_time / 60 / 60;
