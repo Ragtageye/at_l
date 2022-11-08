@@ -197,11 +197,13 @@ fn main() {
         .arg(
             Arg::new("display")
             .short('d')
+            .action(clap::ArgAction::SetTrue)
             .help("displays available activities")
         )
         .arg(
             Arg::new("show_times")
             .short('s')
+            .action(clap::ArgAction::SetTrue)
             .help("shows the time for all activities")
         )
         .arg(
@@ -219,12 +221,17 @@ fn main() {
         .get_matches();
 
 
-        if let Some(_d) = matches.get_one::<String>("display") {
+        if let Some(d) = matches.get_one::<bool>("display") {
+            if *d == true {
             list_activities();
+            };
         };
 
-        if let Some(_s) = matches.get_one::<String>("show_times") {
-            display_activity_times();
+        if let Some(s) = matches.get_one::<bool>("show_times") {
+            if *s == true {
+                display_activity_times();
+            };
+            
         };
 
         if let Some(a) = matches.get_one::<String>("add_new") {
