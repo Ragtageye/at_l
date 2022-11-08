@@ -1,0 +1,6 @@
+/mnt/c/Users/Alex Christie/Documents/GitHub/at_l/target/debug/deps/terminal_size-7454803ec052ce3e.rmeta: /home/alexc/.cargo/registry/src/github.com-1ecc6299db9ec823/terminal_size-0.1.17/src/lib.rs /home/alexc/.cargo/registry/src/github.com-1ecc6299db9ec823/terminal_size-0.1.17/src/unix.rs
+
+/mnt/c/Users/Alex Christie/Documents/GitHub/at_l/target/debug/deps/terminal_size-7454803ec052ce3e.d: /home/alexc/.cargo/registry/src/github.com-1ecc6299db9ec823/terminal_size-0.1.17/src/lib.rs /home/alexc/.cargo/registry/src/github.com-1ecc6299db9ec823/terminal_size-0.1.17/src/unix.rs
+
+/home/alexc/.cargo/registry/src/github.com-1ecc6299db9ec823/terminal_size-0.1.17/src/lib.rs:
+/home/alexc/.cargo/registry/src/github.com-1ecc6299db9ec823/terminal_size-0.1.17/src/unix.rs:

@@ -6,7 +6,8 @@ use clap::{Command, Arg};
 use std::fs::File;
 use std::fs::OpenOptions;
 use std::io::Write;
-use chrono;
+use indicatif::{ProgressStyle, ProgressBar};
+use std::time::Duration;
 // use serde_json::{Number, Value};
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
@@ -38,13 +39,19 @@ fn count_time() -> TimeResults {
         nondividedtime: 0,
     };
     //todo: replace this with the elapsed function of indicatif crate
+    let pen = indicatif::ProgressBar::new_spinner();
+    let style = ProgressStyle::with_template(
+                    "Press Enter When You're Ready [{elapsed_precise}] {spinner:1.cyan/blue} ",
+    ).unwrap();
+    pen.set_style(style.clone());
     let _whatever = thread::spawn(move || 
-        while ending == false {
-             println!("{} seconds have passed", timer.elapsed().unwrap().as_secs())
+        while !ending {
+            pen.inc(1);
+            
+            //  println!("{} seconds have passed", timer.elapsed().unwrap().as_secs())
     });
-
     let mut stop = String::new();
-    println!("Press Enter When You're Ready");
+    // println!("Press Enter When You're Ready");
     io::stdin()
         .read_line(&mut stop)
         .expect("You Idiot! That's Not an Acceptable Input! And You Know It!");
@@ -203,12 +210,12 @@ fn main() {
         .get_matches();
 
         if let Some(d) = matches.get_one::<bool>("display") {
-            if *d == true {
+            if *d {
             list_activities();
             };
         };
         if let Some(s) = matches.get_one::<bool>("show_times") {
-            if *s == true {
+            if *s {
                 display_activity_times();
             };
             
