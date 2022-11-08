@@ -152,7 +152,10 @@ fn display_activity_times() {
         let mut total_time: i64 = 0;
 
         for k in 0..p[act_list[j]].as_array().unwrap().len() {
-            let t_out = p[act_list[j]].as_array().unwrap()[k].as_object().unwrap().get("time_achieved").unwrap().as_object().unwrap().get("nondividedtime").unwrap().as_i64().unwrap();
+            let t_out = p[act_list[j]].as_array()
+                                      .unwrap()[k].as_object().unwrap()
+                                      .get("time_achieved").unwrap().as_object().unwrap()
+                                      .get("nondividedtime").unwrap().as_i64().unwrap();
             total_time += t_out;
         }
         let hou = total_time / 60 / 60;
@@ -165,6 +168,7 @@ fn display_activity_times() {
 
 fn remove_activity(input: String) {
     let mut p = file_reader();
+    // p.as_object_mut().unwrap().insert(input.clone(), serde_json::json!([]));
     p.as_object_mut().unwrap().remove(&input);
     let out = serde_json::to_string_pretty(&p);
     let mut seq = OpenOptions::new()
@@ -172,10 +176,10 @@ fn remove_activity(input: String) {
                         .write(true)
                         .append(false)
                         .create(true)
+                        .truncate(true)
                         .open("time_log.json")
                         .expect("Unable to open file");
     seq.write_all(out.expect("File Not Found").as_bytes()).expect("Unable to write data");
-
     println!("{:#?}", p)
 }
 
@@ -215,11 +219,11 @@ fn main() {
         .get_matches();
 
 
-        if let Some(d) = matches.get_one::<String>("display") {
+        if let Some(_d) = matches.get_one::<String>("display") {
             list_activities();
         };
 
-        if let Some(s) = matches.get_one::<String>("show_times") {
+        if let Some(_s) = matches.get_one::<String>("show_times") {
             display_activity_times();
         };
 
