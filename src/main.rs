@@ -7,7 +7,7 @@ use std::fs::File;
 use std::fs::OpenOptions;
 use std::io::Write;
 use chrono;
-use serde_json::{Number, Value};
+// use serde_json::{Number, Value};
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
 //mod tui;
@@ -70,13 +70,14 @@ fn count_time() -> TimeResults {
     this_time
 }
 
-fn file_check() -> () {
-    match File::open("time_log.json") {
+fn file_check() -> File {
+    let output = match File::open("time_log.json") {
         Ok(_) => File::open("time_log.json"),
         Err(_) => {let file = File::create("time_log.json");
-                            file.as_ref().expect("File Not Found").write(b"{\n}");
+                            file.as_ref().expect("File Not Found").write(b"{\n}").unwrap();
                    file},
     };
+    output.unwrap()
 }
 
 fn file_writer(timer_results:TimeResults, activity: &str) -> Result<()> {
@@ -110,10 +111,10 @@ fn file_reader()  -> serde_json::Value {
 
 fn list_activities() {
     let p = file_reader();
-    let mut counter: i32 = 1;
+    let mut _counter: i32 = 1;
     for i in p.as_object().unwrap().keys() {
-        println!("[{}] {}", counter, i);
-        counter += 1;
+        println!("[{}] {}", _counter, i);
+        _counter += 1;
     }
 }
 
@@ -134,8 +135,8 @@ fn add_activity(new_activity: String) {
     list_activities();
 }
 
-fn choose_activity() {
-    let mut choice: i32;
+fn _choose_activity() {
+    let mut _choice: i32;
     list_activities();
     println!("Please Choose an Activity");
     todo!()
@@ -168,7 +169,6 @@ fn display_activity_times() {
 
 fn remove_activity(input: String) {
     let mut p = file_reader();
-    // p.as_object_mut().unwrap().insert(input.clone(), serde_json::json!([]));
     p.as_object_mut().unwrap().remove(&input);
     let out = serde_json::to_string_pretty(&p);
     let mut seq = OpenOptions::new()
@@ -232,7 +232,7 @@ fn main() {
         }
 
         if let Some(t) = matches.get_one::<String>("time_activity") {
-           file_writer(count_time(), t);
+           file_writer(count_time(), t).unwrap();
         }
 
         if let Some(r) = matches.get_one::<String>("remove") {
