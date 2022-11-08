@@ -27,6 +27,7 @@ struct ActivityData {
     time_achieved: TimeResults,
 }
 
+//count_time() and time_writer() are what create new timed entries to timelog
 fn count_time() -> TimeResults {
     let timer = SystemTime::now();
     let ending = false;
@@ -36,7 +37,7 @@ fn count_time() -> TimeResults {
         seconds: 0,
         nondividedtime: 0,
     };
-
+    //todo: replace this with the elapsed function of indicatif crate
     let _whatever = thread::spawn(move || 
         while ending == false {
              println!("{} seconds have passed", timer.elapsed().unwrap().as_secs())
@@ -69,7 +70,20 @@ fn count_time() -> TimeResults {
     } 
     this_time
 }
+fn time_writer(timer_results:TimeResults, activity: &str) -> Result<()> {
+    let current_count = ActivityData {
+        activity_name: activity.to_string(),
+        activity_date: chrono::offset::Local::now().to_string(),
+        time_achieved: timer_results,
+    };
+    let mut p = file_reader();
+    p[activity].as_array_mut().unwrap().push(serde_json::json!(current_count));
+    file_write(p);
+    Ok(())
 
+}
+
+// file_check() creates time_log.json if it isnt there, file_reader() pulls time_log.json data into scope, file_write() takes in altered json data and outputs it to time_log.json
 fn file_check() -> File {
     let output = match File::open("time_log.json") {
         Ok(_) => File::open("time_log.json"),
@@ -79,36 +93,38 @@ fn file_check() -> File {
     };
     output.unwrap()
 }
-
-fn file_writer(timer_results:TimeResults, activity: &str) -> Result<()> {
-    let current_count = ActivityData {
-        activity_name: activity.to_string(),
-        activity_date: chrono::offset::Local::now().to_string(),
-        time_achieved: timer_results,
-    };
-    let mut p = file_reader();
-    p[activity].as_array_mut().unwrap().push(serde_json::json!(current_count));
-    let out = serde_json::to_string_pretty(&p);
-    let mut seq = OpenOptions::new()
-                        .read(true)
-                        .write(true)
-                        .append(false)
-                        .create(true)
-                        .open("time_log.json")
-                        .expect("Unable to open file");
-    seq.write_all(out.expect("File Not Found").as_bytes()).expect("Unable to write data");
-
-    Ok(())
-
-}
-
 fn file_reader()  -> serde_json::Value {
     file_check();
     let text = std::fs::read_to_string("time_log.json").unwrap();
     let p: serde_json::Value = serde_json::from_str(&text).unwrap();
     p
 }
+fn file_write(input: serde_json::Value) {
+    let out = serde_json::to_string_pretty(&input);
+    let mut seq = OpenOptions::new()
+                        .read(true)
+                        .write(true)
+                        .append(false)
+                        .create(true)
+                        .truncate(true)
+                        .open("time_log.json")
+                        .expect("Unable to open file");
+    seq.write_all(out.expect("File Not Found").as_bytes()).expect("Unable to write data");
+}
 
+// add_activity() creates a new category, remove_activity() removes an activity(), list_activities() shows all categories, display_activity_times() does what it says
+fn add_activity(new_activity: String) {
+    let mut p = file_reader();
+    p.as_object_mut().unwrap().insert(new_activity.clone(), serde_json::json!([]));
+    file_write(p);
+    println!("[{:#?}] added, Here is the full list of activities", &new_activity);
+    list_activities();
+}
+fn remove_activity(input: String) {
+    let mut p = file_reader();
+    p.as_object_mut().unwrap().remove(&input);
+    file_write(p);
+}
 fn list_activities() {
     let p = file_reader();
     let mut _counter: i32 = 1;
@@ -117,32 +133,6 @@ fn list_activities() {
         _counter += 1;
     }
 }
-
-fn add_activity(new_activity: String) {
-    let mut p = file_reader();
-    p.as_object_mut().unwrap().insert(new_activity.clone(), serde_json::json!([]));
-    let out = serde_json::to_string_pretty(&p);
-    let mut seq = OpenOptions::new()
-                        .read(true)
-                        .write(true)
-                        .append(false)
-                        .create(true)
-                        .open("time_log.json")
-                        .expect("Unable to open file");
-    seq.write_all(out.expect("File Not Found").as_bytes()).expect("Unable to write data");
-
-    println!("[{:#?}] added, Here is the full list of activities", &new_activity);
-    list_activities();
-}
-
-fn _choose_activity() {
-    let mut _choice: i32;
-    list_activities();
-    println!("Please Choose an Activity");
-    todo!()
-
-}
-
 fn display_activity_times() {
     let p = file_reader();
     let mut act_list = vec![];
@@ -167,20 +157,12 @@ fn display_activity_times() {
     }
 }
 
-fn remove_activity(input: String) {
-    let mut p = file_reader();
-    p.as_object_mut().unwrap().remove(&input);
-    let out = serde_json::to_string_pretty(&p);
-    let mut seq = OpenOptions::new()
-                        .read(true)
-                        .write(true)
-                        .append(false)
-                        .create(true)
-                        .truncate(true)
-                        .open("time_log.json")
-                        .expect("Unable to open file");
-    seq.write_all(out.expect("File Not Found").as_bytes()).expect("Unable to write data");
-    println!("{:#?}", p)
+fn _choose_activity() {
+    let mut _choice: i32;
+    list_activities();
+    println!("Please Choose an Activity");
+    todo!()
+
 }
 
 fn main() {
@@ -220,37 +202,24 @@ fn main() {
                      display the help information from --help or -h")
         .get_matches();
 
-
         if let Some(d) = matches.get_one::<bool>("display") {
             if *d == true {
             list_activities();
             };
         };
-
         if let Some(s) = matches.get_one::<bool>("show_times") {
             if *s == true {
                 display_activity_times();
             };
             
         };
-
         if let Some(a) = matches.get_one::<String>("add_new") {
             add_activity(a.to_string());
         }
-
         if let Some(t) = matches.get_one::<String>("time_activity") {
-           file_writer(count_time(), t).unwrap();
+           time_writer(count_time(), t).unwrap();
         }
-
         if let Some(r) = matches.get_one::<String>("remove") {
             remove_activity(r.to_string());
-        }
-        // add_activity("talking".to_string());
-        // file_writer(count_time(), "studying");
-        // choose_activity();
-        // display_activity_times();
-        //file_check();
-        //test_write();
-        // println!("{:#?}", file_reader())
-    
+        }    
 }
