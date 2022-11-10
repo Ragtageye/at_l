@@ -1,14 +1,11 @@
 use std::time::SystemTime;
-//use std::thread::sleep;
 use std::io;
 use std::thread;
 use clap::{Command, Arg};
 use std::fs::File;
 use std::fs::OpenOptions;
 use std::io::Write;
-use indicatif::{ProgressStyle, ProgressBar};
-use std::time::Duration;
-// use serde_json::{Number, Value};
+use indicatif::ProgressStyle;
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
 //mod tui;
@@ -92,9 +89,9 @@ fn time_writer(timer_results:TimeResults, activity: &str) -> Result<()> {
 
 // file_check() creates time_log.json if it isnt there, file_reader() pulls time_log.json data into scope, file_write() takes in altered json data and outputs it to time_log.json
 fn file_check() -> File {
-    let output = match File::open("time_log.json") {
-        Ok(_) => File::open("time_log.json"),
-        Err(_) => {let file = File::create("time_log.json");
+    let output = match File::open("./time_log.json") {
+        Ok(_) => File::open("./time_log.json"),
+        Err(_) => {let file = File::create("./time_log.json");
                             file.as_ref().expect("File Not Found").write(b"{\n}").unwrap();
                    file},
     };
@@ -102,11 +99,12 @@ fn file_check() -> File {
 }
 fn file_reader()  -> serde_json::Value {
     file_check();
-    let text = std::fs::read_to_string("time_log.json").unwrap();
+    let text = std::fs::read_to_string("./time_log.json").unwrap();
     let p: serde_json::Value = serde_json::from_str(&text).unwrap();
     p
 }
 fn file_write(input: serde_json::Value) {
+    let path = std::path::Path::new("./time_log.json");
     let out = serde_json::to_string_pretty(&input);
     let mut seq = OpenOptions::new()
                         .read(true)
@@ -114,7 +112,7 @@ fn file_write(input: serde_json::Value) {
                         .append(false)
                         .create(true)
                         .truncate(true)
-                        .open("time_log.json")
+                        .open(path)
                         .expect("Unable to open file");
     seq.write_all(out.expect("File Not Found").as_bytes()).expect("Unable to write data");
 }

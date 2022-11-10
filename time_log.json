@@ -2,13 +2,13 @@
   "piano": [],
   "sleeping": [
     {
-      "activity_date": "2022-11-03 13:11:55.320613700 -04:00",
-      "activity_name": "A",
+      "activity_date": "2022-11-10 13:17:10.181867800 -05:00",
+      "activity_name": "sleeping",
       "time_achieved": {
-        "hours": 0,
-        "minutes": 0,
-        "nondividedtime": 52,
-        "seconds": 52
+        "hours": 1,
+        "minutes": 10,
+        "nondividedtime": 4239,
+        "seconds": 39
       }
     }
   ],
@@ -53,6 +53,16 @@
         "minutes": 3,
         "nondividedtime": 228,
         "seconds": 48
+      }
+    },
+    {
+      "activity_date": "2022-11-10 10:52:32.384269500 -05:00",
+      "activity_name": "talking",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 14,
+        "nondividedtime": 847,
+        "seconds": 7
       }
     }
   ],
@@ -435,6 +445,28 @@
         "minutes": 2,
         "nondividedtime": 125,
         "seconds": 5
+      }
+    }
+  ],
+  "writing": [
+    {
+      "activity_date": "2022-11-10 11:36:18.646950800 -05:00",
+      "activity_name": "writing",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 38,
+        "nondividedtime": 2297,
+        "seconds": 17
+      }
+    },
+    {
+      "activity_date": "2022-11-10 14:18:54.207413300 -05:00",
+      "activity_name": "writing",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 0,
+        "nondividedtime": 12,
+        "seconds": 12
       }
     }
   ]
