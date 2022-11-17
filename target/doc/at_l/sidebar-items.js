@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":[["_choose_activity",""],["add_activity",""],["count_time",""],["display_activity_times",""],["file_check",""],["file_reader",""],["file_write",""],["list_activities",""],["main",""],["remove_activity",""],["time_writer",""]],"struct":[["ActivityData",""],["TimeResults",""]]};
