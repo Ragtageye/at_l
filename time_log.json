@@ -42,6 +42,26 @@
         "nondividedtime": 347,
         "seconds": 47
       }
+    },
+    {
+      "activity_date": "2022-11-14 11:04:12.707968500 -05:00",
+      "activity_name": "studying",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 9,
+        "nondividedtime": 581,
+        "seconds": 41
+      }
+    },
+    {
+      "activity_date": "2022-11-14 11:35:57.141448 -05:00",
+      "activity_name": "studying",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 26,
+        "nondividedtime": 1604,
+        "seconds": 44
+      }
     }
   ],
   "talking": [
