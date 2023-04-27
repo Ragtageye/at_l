@@ -89,9 +89,9 @@ fn time_writer(timer_results:TimeResults, activity: &str) -> Result<()> {
 
 // file_check() creates time_log.json if it isnt there, file_reader() pulls time_log.json data into scope, file_write() takes in altered json data and outputs it to time_log.json
 fn file_check() -> File {
-    let output = match File::open("./time_log.json") {
-        Ok(_) => File::open("./time_log.json"),
-        Err(_) => {let file = File::create("./time_log.json");
+    let output = match File::open("/mnt/c/Users/Alex Christie/Documents/GitHub/at_l/time_log.json") {
+        Ok(_) => File::open("/mnt/c/Users/Alex Christie/Documents/GitHub/at_l/time_log.json"),
+        Err(_) => {let file = File::create("/mnt/c/Users/Alex Christie/Documents/GitHub/at_l/time_log.json");
                             file.as_ref().expect("File Not Found").write(b"{\n}").unwrap();
                    file},
     };
@@ -99,7 +99,7 @@ fn file_check() -> File {
 }
 fn file_reader()  -> serde_json::Value {
     file_check();
-    let text = std::fs::read_to_string("./time_log.json").unwrap();
+    let text = std::fs::read_to_string("/mnt/c/Users/Alex Christie/Documents/GitHub/at_l/time_log.json").unwrap();
     let p: serde_json::Value = serde_json::from_str(&text).unwrap();
     p
 }

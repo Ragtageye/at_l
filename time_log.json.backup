@@ -1,5 +1,37 @@
 {
   "piano": [],
+  "reading comics": [
+    {
+      "activity_date": "2022-11-29 16:01:22.396511500 -05:00",
+      "activity_name": "reading comics",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 20,
+        "nondividedtime": 1219,
+        "seconds": 19
+      }
+    },
+    {
+      "activity_date": "2022-11-29 17:00:56.958981800 -05:00",
+      "activity_name": "reading comics",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 48,
+        "nondividedtime": 2885,
+        "seconds": 5
+      }
+    },
+    {
+      "activity_date": "2022-12-01 16:38:54.609091300 -05:00",
+      "activity_name": "reading comics",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 12,
+        "nondividedtime": 759,
+        "seconds": 39
+      }
+    }
+  ],
   "sleeping": [
     {
       "activity_date": "2022-11-10 13:17:10.181867800 -05:00",
@@ -9,6 +41,36 @@
         "minutes": 10,
         "nondividedtime": 4239,
         "seconds": 39
+      }
+    },
+    {
+      "activity_date": "2022-11-29 11:42:44.892548400 -05:00",
+      "activity_name": "sleeping",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 32,
+        "nondividedtime": 1924,
+        "seconds": 4
+      }
+    },
+    {
+      "activity_date": "2022-11-29 12:43:30.068547900 -05:00",
+      "activity_name": "sleeping",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 57,
+        "nondividedtime": 3450,
+        "seconds": 30
+      }
+    },
+    {
+      "activity_date": "2022-12-05 11:44:06.734576500 -05:00",
+      "activity_name": "sleeping",
+      "time_achieved": {
+        "hours": 1,
+        "minutes": 14,
+        "nondividedtime": 4483,
+        "seconds": 43
       }
     }
   ],
@@ -41,6 +103,26 @@
         "minutes": 5,
         "nondividedtime": 347,
         "seconds": 47
+      }
+    },
+    {
+      "activity_date": "2022-11-14 11:04:12.707968500 -05:00",
+      "activity_name": "studying",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 9,
+        "nondividedtime": 581,
+        "seconds": 41
+      }
+    },
+    {
+      "activity_date": "2022-11-14 11:35:57.141448 -05:00",
+      "activity_name": "studying",
+      "time_achieved": {
+        "hours": 0,
+        "minutes": 26,
+        "nondividedtime": 1604,
+        "seconds": 44
       }
     }
   ],
