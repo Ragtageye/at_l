@@ -55,7 +55,7 @@ pub(crate) mod db_man {
         }
         names[0]
     }
-    pub fn add_primary_activity(activity_name: String) {
+    pub fn add_primary_activity(activity_name: &String) {
             check_for_base_table();
 
             instance_conn().execute("insert or ignore into Activities (Activity_Name) values(?1)",
@@ -71,7 +71,7 @@ pub(crate) mod db_man {
             instance_conn().execute(&*table_state, ())
                 .expect("**failed to create corresponding table in add_primary_activity**\n");
     }
-    pub fn add_sub_activity(activity_prime: String, activity_sub: String) {
+    pub fn add_sub_activity(activity_prime: &String, activity_sub: String) {
         check_for_base_table();
 
         let sub_entry_table_state: String = format!("create table if not exists {} (\
@@ -94,5 +94,17 @@ pub(crate) mod db_man {
 
         instance_conn().execute(&*table_name, ()).expect("1. add entry failure");
         update_base_time(&data.activity_name, add_time);
+    }
+
+    pub fn return_tables() -> Vec<String>{
+        let conn : Connection = instance_conn();
+        let mut stmt : Statement = conn.prepare("SELECT * from sqlite_master WHERE sql != null").unwrap();
+        let mut rows : Rows = stmt.query([]).unwrap();
+
+        let mut names : Vec<String> = Vec::new();
+        while let Some(row) = rows.next().unwrap() {
+            names.push(row.get(0).unwrap());
+        }
+        names
     }
 }

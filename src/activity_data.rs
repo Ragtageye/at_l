@@ -8,11 +8,11 @@ pub struct ActivityData {
 }
 
 impl ActivityData {
-    pub fn new(a_name: String, times: TimeResults) -> ActivityData {
+    pub fn new(a_name: &String, times: TimeResults) -> ActivityData {
         ActivityData {
-            activity_name : a_name,
-            activity_date: Local::now(),
-            activity_time: times,
+            activity_name : a_name.to_string(),
+            activity_date : Local::now(),
+            activity_time : times,
         }
     }
     pub fn print_activity_data(&self) {

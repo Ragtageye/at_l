@@ -34,7 +34,7 @@ impl TimeResults {
     pub fn get_non_divided_time(&self) -> u64 {
         self.non_divided_time
     }
-    pub fn count_time(&mut self) -> &mut TimeResults {
+    pub fn count_time(mut self) -> TimeResults {
         let timer: SystemTime = SystemTime::now();
         println!("Press enter to continue");
         let _= io::stdin().read_line(&mut "".to_string()).expect("Okay I don't know how you messed that up");

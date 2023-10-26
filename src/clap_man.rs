@@ -22,16 +22,24 @@ at_l --gui, shorten to -E
 
 pub(crate) mod clap_man {
     use clap::{Arg, arg, ArgMatches, command};
+    use crate::db_manager::db_man as db;
+    use text_io::read;
+    use crate::activity_data::ActivityData;
+    use crate::time_results::TimeResults;
 
     pub fn run_args(args: ArgMatches) {
         if let Some(a) = args.get_one::<String>("add_activity") {
-            println!("Add Activity !!!!!");
+            db::add_primary_activity(a);
         }
         if let Some(s) = args.get_one::<String>("add_sub_activity") {
-            println!("Add Sub Activity !!!!!");
+            println!("Please type in the name of your sub-activity");
+            let test = read!();
+            db::add_sub_activity(s, test);
         }
         if let Some(c) = args.get_one::<String>("count_activity_time") {
-            println!("Count Activity !!!!!");
+            let time = TimeResults::new().count_time();
+            let activity = ActivityData::new(c, time);
+            db::add_entry(activity);
         }
         if let Some(g) = args.get_one::<bool>("get_activities") {
             if *g {println!("Get Activities !!!!!")};
@@ -40,7 +48,14 @@ pub(crate) mod clap_man {
             println!("Get Sub Activities");
         }
         if let Some(G) = args.get_one::<bool>("get_all_activities") {
-            if *G {println!("Get All Activity !!!!!")};
+            if *G {
+                println!("It's flushing time");
+                let flushed: Vec<String> = db::return_tables();
+                println!("{:?}", flushed);
+                for (x, y) in flushed.into_iter().enumerate() {
+                    println!("{}: {}", (x + 1), y);
+                }
+            };
         }
         if let Some(t) = args.get_one::<String>("get_time") {
             println!("Get Time !!!!!");
