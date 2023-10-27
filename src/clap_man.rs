@@ -42,26 +42,35 @@ pub(crate) mod clap_man {
             db::add_entry(activity);
         }
         if let Some(g) = args.get_one::<bool>("get_activities") {
-            if *g {println!("Get Activities !!!!!")};
+            if *g {
+                let flushed: Vec<String> = db::return_main_tables();
+                for (x, y) in flushed.into_iter().enumerate() {
+                    println!("{}: {} - {} seconds", (x + 1), y, db::return_main_times(&y));
+                }
+            }
         }
         if let Some(b) = args.get_one::<String>("get_sub_activities") {
-            println!("Get Sub Activities");
+            let flushed: Vec<String> = db::return_sub_tables(b);
+            for (x, y) in flushed.into_iter().enumerate() {
+                println!("{}: {} - {} seconds", (x + 1), y, db::return_table_time_total(&y));
+            }
         }
         if let Some(G) = args.get_one::<bool>("get_all_activities") {
             if *G {
-                println!("It's flushing time");
                 let flushed: Vec<String> = db::return_tables();
-                println!("{:?}", flushed);
                 for (x, y) in flushed.into_iter().enumerate() {
-                    println!("{}: {}", (x + 1), y);
+                    println!("{}: {} - {} seconds", (x + 1), y, db::return_table_time_total(&y));
                 }
             };
         }
         if let Some(t) = args.get_one::<String>("get_time") {
-            println!("Get Time !!!!!");
+            let print_time: u64 = db::return_table_time_total(t);
+            println!("Hours: {}, Minutes: {}, Seconds: {}, where the total time (in seconds) is: {}", print_time / 60 / 60, print_time / 60, print_time & 60, print_time);
         }
         if let Some(T) = args.get_one::<String>("get_time_entries") {
-            println!("Add Activity !!!!!");
+            println!("How many entries do you want to read?");
+            let entriesNum: u64 = read!();
+            db::print_table_rows(T, entriesNum);
         }
         if let Some(E) = args.get_one::<bool>("gui") {
             if *E {println!("GUI !!!!!")};
