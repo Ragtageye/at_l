@@ -20,7 +20,6 @@ start gui when I get that done
 at_l --gui, shorten to -E
  */
 
-pub(crate) mod clap_man {
     use clap::{Arg, arg, ArgMatches, command};
     use crate::db_manager::db_man as db;
     use text_io::read;
@@ -55,8 +54,8 @@ pub(crate) mod clap_man {
                 println!("{}: {} - {} seconds", (x + 1), y, db::return_table_time_total(&y));
             }
         }
-        if let Some(G) = args.get_one::<bool>("get_all_activities") {
-            if *G {
+        if let Some(g) = args.get_one::<bool>("get_all_activities") {
+            if *g {
                 let flushed: Vec<String> = db::return_tables();
                 for (x, y) in flushed.into_iter().enumerate() {
                     println!("{}: {} - {} seconds", (x + 1), y, db::return_table_time_total(&y));
@@ -67,13 +66,13 @@ pub(crate) mod clap_man {
             let print_time: u64 = db::return_table_time_total(t);
             println!("Hours: {}, Minutes: {}, Seconds: {}, where the total time (in seconds) is: {}", print_time / 60 / 60, print_time / 60, print_time & 60, print_time);
         }
-        if let Some(T) = args.get_one::<String>("get_time_entries") {
+        if let Some(t) = args.get_one::<String>("get_time_entries") {
             println!("How many entries do you want to read?");
-            let entriesNum: u64 = read!();
-            db::print_table_rows(T, entriesNum);
+            let entries_num: u64 = read!();
+            db::print_table_rows(t, entries_num);
         }
-        if let Some(E) = args.get_one::<bool>("gui") {
-            if *E {println!("GUI !!!!!")};
+        if let Some(e) = args.get_one::<bool>("gui") {
+            if *e {println!("GUI !!!!!")};
         }
     }
     pub fn return_arg_array() -> ArgMatches {
@@ -99,5 +98,5 @@ pub(crate) mod clap_man {
             gui
         ]).get_matches()
     }
-}
+
 

@@ -1,6 +1,7 @@
 use std::io;
 use std::time::SystemTime;
 
+#[derive(Default)]
 pub struct TimeResults {
     hours: u64,
     minutes: u64,
@@ -15,21 +16,6 @@ impl TimeResults {
             seconds : 0,
             non_divided_time : 0
         }
-    }
-    pub fn print_time(&self) {
-        println!("Hours: {}, Minutes: {}, Seconds: {}, where the total time (in seconds) is: {}", &self.hours, &self.minutes, &self.seconds, &self.non_divided_time);
-    }
-    pub fn get_time_tuple(&self) -> String {
-        return format!("hours: {}, minutes: {}, seconds: {}, total time(in seconds): {}", self.hours, self.minutes, self.seconds, self.non_divided_time)
-    }
-    pub fn get_hours(&self) -> u64 {
-        self.hours
-    }
-    pub fn get_minutes(&self) -> u64 {
-        self.minutes
-    }
-    pub fn get_seconds(&self) -> u64 {
-        self.seconds
     }
     pub fn get_non_divided_time(&self) -> u64 {
         self.non_divided_time
@@ -47,19 +33,7 @@ impl TimeResults {
             }
             Err(e) => println!("Error {e:?}")
         }
-        println!("Seconds: {}", self.seconds);
+
         self
-    }
-
-}
-impl Default for TimeResults {
-    fn default() -> Self {
-        TimeResults {
-            hours : 0,
-            minutes : 0,
-            seconds : 0,
-            non_divided_time : 0,
-        }
-
     }
 }

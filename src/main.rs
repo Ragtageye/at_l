@@ -1,7 +1,4 @@
-use crate::activity_data::ActivityData;
-use crate::time_results::TimeResults;
-use crate::db_manager::db_man;
-use crate::clap_man::clap_man as com;
+use crate::clap_man as com;
 mod time_results;
 mod activity_data;
 mod db_manager;

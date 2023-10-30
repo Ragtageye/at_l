@@ -15,8 +15,4 @@ impl ActivityData {
             activity_time : times,
         }
     }
-    pub fn print_activity_data(&self) {
-        println!("Activity Name: {}, Activity Date and Time: {}, Activity Time Elapsed/Spend: ({})", self.activity_name, self.activity_date, self.activity_time.get_time_tuple())
-    }
-
 }
