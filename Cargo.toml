@@ -10,3 +10,6 @@ chrono = "0.4.31"
 clap = { version = "4.4.6", features = ["cargo"] }
 rusqlite = { version = "0.29.0", features = ["bundled"] }
 text_io = "0.1.12"
+serde = "1.0.190"
+env_logger = "0.10.0"
+slint = "1.2.2"

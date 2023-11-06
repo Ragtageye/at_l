@@ -21,10 +21,11 @@ at_l --gui, shorten to -E
  */
 
     use clap::{Arg, arg, ArgMatches, command};
-    use crate::db_manager::db_man as db;
-    use text_io::read;
     use crate::activity_data::ActivityData;
     use crate::time_results::TimeResults;
+    use crate::db_manager::db_man as db;
+    use crate::gui_man;
+    use text_io::read;
 
     pub fn run_args(args: ArgMatches) {
         if let Some(a) = args.get_one::<String>("add_activity") {
@@ -72,12 +73,24 @@ at_l --gui, shorten to -E
             db::print_table_rows(t, entries_num);
         }
         if let Some(e) = args.get_one::<bool>("gui") {
-            if *e {println!("GUI !!!!!")};
+            if *e {
+                gui_man::make_wnd();
+                slint::slint! {
+                   export component MainWindow inherits Window {
+                    Text {
+                        text: "Hello World!";
+                        color: green;
+                    }
+                }
+            }
+                let app = MainWindow::new().unwrap();
+                app.run().unwrap();
+            };
         }
     }
     pub fn return_arg_array() -> ArgMatches {
         let add_activity: Arg = arg!(-a --add_activity <Main_Activity> "Adds a primary activity (Something basic like chores, or studying");
-        let add_sub_activity: Arg = arg!(-s --add_sub_activity <Main_Activity> "Adds a sub activity (E.G. Add Statistics to Studying");
+        let add_sub_activity: Arg = arg!(-s --add_sub_activity <Main_Activity> "Adds a sub activity (E.G. Add Statistics to Studying)");
         let count_activity_time: Arg = arg!(-c --count_activity_time <Activity> "Starts a timer for a specified activity");
         let get_activities: Arg = arg!(-g --get_activities "Lists all main activities");
         let get_sub_activities: Arg = arg!(-b --get_sub_activities <Main_Activity> "Lists all sub activities for an activity");

@@ -191,15 +191,18 @@ pub(crate) mod db_man {
         let mut stmt: Statement = conn.prepare(&format!("SELECT * from {} WHERE Entry_ID is not 1", activity_name)).expect("print rows failure");
 
         let mut rows: Rows = stmt.query([]).expect("failed at rows");
-
+        let mut rev_rows: Vec<String> = Vec::new();
         while let Some(row) = rows.next().unwrap() {
             let v1 : u64 = row.get_unwrap(0);
             let mut v2 : String = row.get_unwrap(1);
             v2.replace_range(19..36, "");
             let v3 : u64 = row.get_unwrap(2);
             let v4 : u64 = row.get_unwrap(3);
-            println!("Entry_ID: {}, Entry_date: {}, Entry_time: {}, Entry_base_ID: {}", v1, v2.as_str(), v3, v4);
-            if (v1 - 1) == idx_count {
+            rev_rows.push(format!("Entry_ID: {}, Entry_date: {}, Entry_time: {}, Entry_base_ID: {}", v1, v2.as_str(), v3, v4));
+        }
+        for (x, y) in rev_rows.iter().enumerate().rev() {
+            println!("{}:  {}", rev_rows.len() -  x, y);
+            if x == (rev_rows.len() - idx_count as usize) {
                 break;
             }
         }
