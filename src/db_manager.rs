@@ -1,9 +1,16 @@
 pub(crate) mod db_man {
+    use std::path::{PathBuf};
     use rusqlite::{Connection, params, Rows, Statement};
     use crate::activity_data::ActivityData;
-
+    use directories::UserDirs;
     fn instance_conn() -> Connection {
-        let connection : Connection = Connection::open("at_l.db").expect("Can't access, failed at let in instance_conn()");
+        let path_source:UserDirs = UserDirs::new().expect("Could not find Docs");
+        let mut path = PathBuf::from(path_source.document_dir().unwrap().to_str().unwrap().to_owned() + "/at_l");
+        if !path.exists() {
+            std::fs::create_dir(&path).expect("No Write Access");
+        }
+        path.push("at_l.db");
+        let connection : Connection = Connection::open(path).expect("Can't access, failed at let in instance_conn()");
         connection
     }
     fn check_for_base_table() {
