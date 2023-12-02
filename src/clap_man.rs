@@ -26,8 +26,9 @@ at_l --gui, shorten to -E
     use crate::db_manager::db_man as db;
     use crate::gui_man;
     use text_io::read;
+    use crate::db_manager::db_man::{get_times_by_date, return_main_tables, return_sub_tables};
 
-    pub fn run_args(args: ArgMatches) {
+pub fn run_args(args: ArgMatches) {
         if let Some(a) = args.get_one::<String>("add_activity") {
             db::add_primary_activity(a);
         }
@@ -43,14 +44,14 @@ at_l --gui, shorten to -E
         }
         if let Some(g) = args.get_one::<bool>("get_activities") {
             if *g {
-                let flushed: Vec<String> = db::return_main_tables();
-                for (x, y) in flushed.into_iter().enumerate() {
-                    println!("{}: {} - {} seconds", (x + 1), y, db::return_main_times(&y));
+                let flushed: Vec<String> = return_main_tables();
+                for x in flushed.into_iter() {
+                    println!("{}", x);
                 }
             }
         }
         if let Some(b) = args.get_one::<String>("get_sub_activities") {
-            let flushed: Vec<String> = db::return_sub_tables(b);
+            let flushed: Vec<String> = return_sub_tables(b);
             for (x, y) in flushed.into_iter().enumerate() {
                 println!("{}: {} - {} seconds", (x + 1), y, db::return_table_time_total(&y));
             }
@@ -72,6 +73,46 @@ at_l --gui, shorten to -E
             let entries_num: u64 = read!();
             db::print_table_rows(t, entries_num);
         }
+        if let Some(o) = args.get_one::<String>("get_sub_times") {
+            let act_names: Vec<String> = return_sub_tables(o);
+            let print_times: Vec<u64> = db::get_sub_times(o);
+            println!("{:?}", act_names);
+            println!("{:?}", print_times);
+        }
+        if let Some(t) = args.get_one::<bool>("get_all_info") {
+            if *t {
+                println!("{:#?}", db::get_all_sub_times());
+            }
+        }
+        if let Some(m) = args.get_one::<String>("get_month_info") {
+            let name = m;
+            for e in return_sub_tables(name).iter() {
+                for day in 13..30 {
+                    let day_check = get_times_by_date(e.to_string(), day);
+                    if day_check.3 != 0 {
+                        println!("{:?}", day_check);
+                    }
+                }
+            }
+        }
+    if let Some(t) = args.get_one::<bool>("get_all_month_info") {
+        if *t {
+            let tables = return_main_tables();
+            for main_activity in tables {
+                for sub_activity in return_sub_tables(&main_activity) {
+                    for day in 13..30 {
+                        let day_check = get_times_by_date(sub_activity.to_string(), day);
+                        if day_check.3 != 0 {
+                            println!("{}", day_check.0);
+                            println!("{}", day_check.1);
+                            println!("{}", day_check.2);
+                            println!("{}", day_check.3);
+                        }
+                    }
+                }
+            }
+        }
+    }
         if let Some(e) = args.get_one::<bool>("gui") {
             if *e {
                 gui_man::make_wnd();
@@ -97,6 +138,10 @@ at_l --gui, shorten to -E
         let get_all_activities: Arg = arg!(-G --get_all_activities "Lists all activities and sub activities");
         let get_time: Arg = arg!(-t --get_time <Activity> "Lists the total time for an activity and all sub activities");
         let get_time_entries: Arg = arg!(-T --get_time_entries <Activity> "Lists the 5 most recent time entries for an activity");
+        let get_sub_times: Arg = arg!(-o --get_sub_times <Activity> "Lists total times for Sub Activities of a Main Activity");
+        let get_all_info: Arg = arg!(-y --get_all_info "Lists all of it");
+        let get_month_info: Arg = arg!(-m --get_month_info <Activity> "Lists info for the month of november");
+        let get_all_month_info: Arg = arg!(-M --get_all_month_info "Lists all info for the month of november");
         let gui: Arg = arg!(-E --gui "Runs the gui version of at_l");
 
         command!().args([
@@ -108,6 +153,10 @@ at_l --gui, shorten to -E
             get_all_activities,
             get_time,
             get_time_entries,
+            get_sub_times,
+            get_all_info,
+            get_month_info,
+            get_all_month_info,
             gui
         ]).get_matches()
     }

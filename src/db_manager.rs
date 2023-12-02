@@ -1,4 +1,5 @@
 pub(crate) mod db_man {
+    use std::fmt::format;
     use std::path::{PathBuf};
     use rusqlite::{Connection, params, Rows, Statement};
     use crate::activity_data::ActivityData;
@@ -214,4 +215,52 @@ pub(crate) mod db_man {
             }
         }
     }
+    pub fn get_sub_times(activity_name: &String) -> Vec<u64> {
+        let list: Vec<String> = return_sub_tables(activity_name);
+        let mut out_vec: Vec<u64> = Vec::new();
+        for activity in list.iter(){
+               out_vec.push(return_table_time_total(&activity));
+        }
+        return out_vec;
+    }
+    #[derive(Debug)]
+    pub struct Activity {
+        pub activity_name: String,
+        pub sub_activities: Vec<String>,
+        pub activity_times: Vec<u64>,
+        pub total_time: u64,
+    }
+
+    pub fn get_all_sub_times() -> Vec<Activity> {
+        let mut output: Vec<Activity> = Vec::new();
+        for element in return_main_tables() {
+            let name: &String = &element;
+            let sub_names: Vec<String> = return_sub_tables(&element);
+            let times: Vec<u64> = get_sub_times(&element);
+            let total:u64 = return_base_time(&element);
+
+            let addendum: Activity = Activity {
+                activity_name: name.clone(),
+                sub_activities: sub_names,
+                activity_times: times,
+                total_time: total
+            };
+            output.push(addendum);
+
+        }
+        output
+    }
+
+    pub fn get_times_by_date(sub_act_name: String, day: u8) -> (String, String, String, u64) {
+        let conn = instance_conn();
+        let mut output: u64 = 0;
+        let mut stmt: Statement = conn.prepare(&format!("SELECT Entry_time from {} WHERE Entry_ID is not 1 and Entry_date like '2023-11-{}%'", sub_act_name, day)).expect("print rows failure");
+        let mut rows: Rows = stmt.query([]).expect("failed at rows");
+        while let Some(row) = rows.next().unwrap() {
+            let add: u64 = row.get_unwrap(0);
+            output += add;
+        }
+        return (return_primary_activity(&sub_act_name), sub_act_name, format!("2023-11-{}", day), output);
+    }
+
 }
